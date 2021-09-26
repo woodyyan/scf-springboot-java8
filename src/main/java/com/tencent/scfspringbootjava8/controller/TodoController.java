@@ -1,27 +1,48 @@
 package com.tencent.scfspringbootjava8.controller;
 
+import com.tencent.scfspringbootjava8.model.TodoItem;
+import com.tencent.scfspringbootjava8.repository.TodoRepository;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/todos")
 public class TodoController {
-    private List<String> todos = new ArrayList<>();
+    private final TodoRepository todoRepository;
 
     public TodoController() {
-        todos.add("first todo");
+        todoRepository = new TodoRepository();
     }
 
     @GetMapping
-    public String get() {
-        return todos.toString();
+    public Collection<TodoItem> getAllTodos() {
+        return todoRepository.getAll();
+    }
+
+    @GetMapping("/{key}")
+    public TodoItem getByKey(@PathVariable("key") String key) {
+        return todoRepository.find(key);
     }
 
     @PostMapping
-    public String add(@RequestBody String todo) {
-        todos.add(todo);
-        return todos.toString();
+    public TodoItem create(@RequestBody TodoItem item) {
+        todoRepository.add(item);
+        return item;
+    }
+
+    @PutMapping("/{key}")
+    public TodoItem update(@PathVariable("key") String key, @RequestBody TodoItem item) {
+        if (item == null || !item.getKey().equals(key)) {
+            return null;
+        }
+
+        todoRepository.update(key, item);
+        return item;
+    }
+
+    @DeleteMapping("/{key}")
+    public void delete(@PathVariable("key") String key) {
+        todoRepository.remove(key);
     }
 }
