@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/todos")
+@RequestMapping("/scf-springboot-todo/todos")
 public class TodoController {
     private final TodoRepository todoRepository;
 
