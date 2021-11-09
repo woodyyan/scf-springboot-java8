@@ -23,7 +23,6 @@ public class ScfHandler {
     // function entry, use ApiGatewayEvent to get request
     // send to localhost:8080/hello as defined in helloSpringBoot.java
     public String mainHandler(APIGatewayProxyRequestEvent req) {
-
         System.out.println("start main handler");
         if (cold_launch) {
             System.out.println("start spring");
