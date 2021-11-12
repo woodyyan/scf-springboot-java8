@@ -1,20 +1,14 @@
 plugins {
     id 'org.springframework.boot' version '2.5.4'
-//	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'java-library'
-    id 'application'
-    id 'com.github.johnrengelman.shadow' version '7.0.0'
+    id 'java'
     id 'org.springframework.experimental.aot' version '0.10.3'
-    id 'org.graalvm.buildtools.native' version '0.9.3'
 }
+
+apply plugin: "io.spring.dependency-management"
 
 group = 'com.tencent'
-version = '0.0.2-SNAPSHOT'
-//sourceCompatibility = '1.8'
-
-springAot {
-    removeSpelSupport = true
-}
+version = '0.0.1-native-SNAPSHOT'
+sourceCompatibility = '1.8'
 
 repositories {
     mavenCentral()
@@ -25,10 +19,7 @@ repositories {
 }
 
 dependencies {
-    api 'org.springframework.boot:spring-boot-starter-web'
-    api group: 'com.tencentcloudapi', name: 'tencentcloud-sdk-java', version: '3.1.356'
-    api group: 'com.tencentcloudapi', name: 'scf-java-events', version: '0.0.4'
-    api group: 'org.springframework.experimental', name: 'spring-native', version: '0.10.3'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
@@ -37,26 +28,9 @@ bootBuildImage {
     environment = [
             "BP_NATIVE_IMAGE": "true"
     ]
-    buildpacks = ["gcr.io/paketo-buildpacks/java-native-image:5.3.0"]
+    buildpacks = ["gcr.io/paketo-buildpacks/java-native-image:5.5.0"]
 }
 
 test {
     useJUnitPlatform()
 }
-
-application {
-    // Define the main class for the application.
-    mainClass = 'com.tencent.scfspringbootjava8.ScfSpringbootJava8Application'
-}
-
-//task buildZip(type: Zip) {
-//	from compileJava
-//	from processResources
-//	into('lib') {
-//		configurations {
-//			runtime
-//		}
-//	}
-//}
-//
-//build.dependsOn buildZip
